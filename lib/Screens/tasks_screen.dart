@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_4/Screens/add_tasks_screen.dart';
-import 'package:flutter_application_4/models/task.dart';
 import 'package:flutter_application_4/models/task_data.dart';
 import 'package:flutter_application_4/widgets/tasks_list.dart';
 import 'package:provider/provider.dart';
@@ -32,13 +31,13 @@ class Tasksscreen extends StatelessWidget {
           );
         },
         backgroundColor: Colors.amber,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
-      backgroundColor: Color.fromARGB(255, 206, 40, 164),
+      backgroundColor: const Color.fromARGB(255, 206, 40, 164),
       body: Container(
-        padding: EdgeInsets.all(50),
+        padding: const EdgeInsets.all(50),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
+          const Row(
             children: [
               Icon(
                 Icons.playlist_add_check,
@@ -59,17 +58,17 @@ class Tasksscreen extends StatelessWidget {
           ),
           Text(
             '${Provider.of<TaskData>(context).tasks.length}Tasks.',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: const TextStyle(color: Colors.white, fontSize: 18),
           ),
-          SizedBox(
+          const SizedBox(
             width: 30,
           ),
           Expanded(
               child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Taskslist()
+                  child: const Taskslist()
         ),
       ),
         ]
