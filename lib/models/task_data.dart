@@ -7,5 +7,16 @@ class TaskData extends ChangeNotifier{
     Task(name: 'go hospital'),
     Task(name: 'praying'),
   ];
-
+  void addTask(String newTaskTitle){
+    tasks.add(Task(name: newTaskTitle));
+    notifyListeners();
+  }
+void upDateTask(Task task){
+  task.doneChange();
+  notifyListeners();
+}
+void deleteTask(Task task){
+  tasks.remove(task);
+  notifyListeners();
+}
 }

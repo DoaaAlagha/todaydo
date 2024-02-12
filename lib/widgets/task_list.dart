@@ -5,8 +5,14 @@ class TaskTitle extends StatelessWidget {
  final bool isChecked ;
  final String taskTitle;
  final void Function(bool?)CheckboxChange;
- TaskTitle({required this.isChecked,required this.
- taskTitle, required this.CheckboxChange});
+ final void Function()listTileDelete;
+
+ TaskTitle(
+  {required this.isChecked,
+  required this.taskTitle,
+  required this.CheckboxChange,
+  required this.listTileDelete});
+ 
  
 
   @override
@@ -21,8 +27,8 @@ trailing: Checkbox(
   activeColor: Colors.pink,
   value: isChecked,
   onChanged: CheckboxChange,
-
-),      
+),
+onLongPress: listTileDelete,      
     );
   }
   }
