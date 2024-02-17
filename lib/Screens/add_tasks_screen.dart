@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_4/models/task_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddTaskScreen extends StatelessWidget {
   final Function addTaskCallback;
-   AddTaskScreen(this.addTaskCallback);
+  AddTaskScreen(this.addTaskCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +25,22 @@ class AddTaskScreen extends StatelessWidget {
           TextField(
             autofocus: true,
             textAlign: TextAlign.center,
-            onChanged: (newText){
-              newTaskTitle=newText;
+            onChanged: (newText) {
+              newTaskTitle = newText;
             },
           ),
           TextButton(
-              onPressed: () {
-                Provider.of<TaskData>(context,listen: false).addTask(newTaskTitle!);
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                Provider.of<TaskData>(context, listen: false)
+                    .addTask(newTaskTitle!);
+                prefs.setStringList(
+                    'tasks',
+                    Provider.of<TaskData>(context, listen: false)
+                        .tasks
+                        .map((task) => task.name)
+                        .toList());
                 Navigator.pop(context);
-                
               },
               child: Text(
                 'Add',
