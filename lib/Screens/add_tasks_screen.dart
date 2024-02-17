@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_4/models/task_data.dart';
+import 'package:flutter_application_4/viewmodels/task_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/task.dart';
+
 class AddTaskScreen extends StatelessWidget {
-  final Function addTaskCallback;
+  final void Function(Task task) addTaskCallback;
   AddTaskScreen(this.addTaskCallback);
 
   @override
@@ -30,22 +32,12 @@ class AddTaskScreen extends StatelessWidget {
             },
           ),
           TextButton(
-              onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                Provider.of<TaskData>(context, listen: false)
-                    .addTask(newTaskTitle!);
-                prefs.setStringList(
-                    'tasks',
-                    Provider.of<TaskData>(context, listen: false)
-                        .tasks
-                        .map((task) => task.name)
-                        .toList());
-                Navigator.pop(context);
-              },
+              onPressed: () =>
+                  addTaskCallback(Task(name: newTaskTitle!, isDone: false)),
               child: Text(
                 'Add',
                 style: TextStyle(
-                    backgroundColor: Color.fromARGB(255, 206, 40, 164),
+                    backgroundColor: Color.fromARGB(255, 239, 70, 197),
                     color: Colors.white),
               ))
         ],
