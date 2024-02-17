@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_4/widgets/task_list.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_4/models/task_data.dart';
+import 'package:flutter_application_4/viewmodels/task_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Taskslist extends StatelessWidget {
@@ -9,23 +9,29 @@ class Taskslist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskData>(
-      builder: (context, TaskData, child) {
+    return Consumer<TaskViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoading)
+          return const Center(child: CircularProgressIndicator());
+
+        if (viewModel.tasks.isEmpty)
+          return const Center(child: Text('No Tasks Yet'));
+
         return ListView.builder(
-            itemCount: TaskData.tasks.length,
-            itemBuilder: (context, index) {
-              return TaskTitle(
-                isChecked: TaskData.tasks[index].isDone,
-                taskTitle: TaskData.tasks[index].name,
-                CheckboxChange: (newvalue) {
-                  TaskData.upDateTask(TaskData.tasks[index]);
-                },
-                listTileDelete: () {
-                  TaskData.deleteTask(TaskData.tasks[index]);
-                },
-              );
-            },
+          itemCount: viewModel.tasks.length,
+          itemBuilder: (context, index) {
+            return TaskTitle(
+              isChecked: viewModel.tasks[index].isDone,
+              taskTitle: viewModel.tasks[index].name,
+              CheckboxChange: (newvalue) {
+                viewModel.upDateTask(viewModel.tasks[index]);
+              },
+              listTileDelete: () {
+                viewModel.deleteTask(viewModel.tasks[index]);
+              },
             );
+          },
+        );
       },
     );
   }

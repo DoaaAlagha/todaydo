@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_4/Screens/add_tasks_screen.dart';
-import 'package:flutter_application_4/models/task.dart';
-import 'package:flutter_application_4/models/task_data.dart';
+import 'package:flutter_application_4/viewmodels/task_viewmodel.dart';
 import 'package:flutter_application_4/widgets/tasks_list.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Tasksscreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context)  {
-    final prefs = SharedPreferences.getInstance();
-    final tasks = prefs.getStringList('tasks') ?? [];
-    Provider.of<TaskData>(context, listen: false).tasks =
-        tasks.map((title) => Task(name: title)).toList();
-
+  Widget build(BuildContext context) {
+    var viewModel = context.read<TaskViewModel>();
+    viewModel.init();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -21,16 +16,13 @@ class Tasksscreen extends StatelessWidget {
             context: context,
             builder: (context) => SingleChildScrollView(
               child: Container(
-                child: AddTaskScreen((newTaskTitle) {
-                  Provider.of<TaskData>(context, listen: false)
-                      .addTask(newTaskTitle);
-                  prefs.setStringList('tasks',
-                      Provider.of<TaskData>(context, listen: false)
-                          .tasks
-                          .map((task) => task.name)
-                          .toList());
-                  Navigator.pop(context);
-                }),
+                child: AddTaskScreen(
+                  (newTaskTitle) {
+                    viewModel.addTask(newTaskTitle);
+
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ),
           );
@@ -55,7 +47,7 @@ class Tasksscreen extends StatelessWidget {
               ],
             ),
             Text(
-              '${Provider.of<TaskData>(context).tasks.length} Tasks.',
+              '${viewModel.tasks.length} Tasks.',
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             SizedBox(width: 30),
